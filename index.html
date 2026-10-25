@@ -1,0 +1,2528 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SAPE — Rehabilitasi & Revitalisasi Sekolah | SAPE</title>
+    <!-- Global layout, shared components, and responsive rules -->
+    <style>
+      :root {
+        --navy: #004b88;
+        --blue: #008fe2;
+        --teal: #00bda8;
+        --gold: #f3c623;
+        --orange: #eb8218;
+        --pale: #effeff;
+        --ink: #07517a;
+        --muted: #5e8da4;
+        --line: #c4eef2;
+        --white: #fff;
+        --shadow: 0 20px 42px #167ca525;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: linear-gradient(
+          125deg,
+          #d0fcff 0%,
+          #e8faff 55%,
+          #eafcff 100%
+        );
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+      body.menu-open {
+        overflow: hidden;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      .shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .side {
+        width: 258px;
+        flex-shrink: 0;
+        background: linear-gradient(
+          170deg,
+          #0b9ed9 0%,
+          #0586c7 42%,
+          #076597 100%
+        );
+        color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 15px;
+        transition: transform 0.25s ease;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 5px 10px 25px;
+        border-bottom: 1px solid #ffffff35;
+      }
+      .menu-toggle,
+      .menu-close,
+      .menu-overlay {
+        display: none;
+      }
+      .menu-toggle,
+      .menu-close {
+        border: 0;
+      }
+      .menu-toggle {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 11px;
+        background: #e7f8fb;
+        color: var(--navy);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .menu-toggle span {
+        width: 20px;
+        height: 2px;
+        border-radius: 2px;
+        background: currentColor;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+      .menu-toggle[aria-expanded="true"] span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+      }
+      .menu-toggle[aria-expanded="true"] span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+      .menu-close {
+        margin-left: auto;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #ffffff24;
+        color: white;
+        place-items: center;
+        font-size: 25px;
+        line-height: 1;
+      }
+      .brandmark {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--gold), var(--teal));
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+        font-size: 23px;
+        color: white;
+      }
+      .brand strong {
+        font-size: 23px;
+        letter-spacing: 1px;
+      }
+      .brand small {
+        display: block;
+        color: #d7e8ff;
+        font-size: 11px;
+        line-height: 1.5;
+      }
+      .slabel {
+        padding: 30px 13px 12px;
+        color: #abc2f5;
+        font-size: 10px;
+        letter-spacing: 2px;
+        font-weight: 800;
+      }
+      .nav {
+        border: 0;
+        background: transparent;
+        color: #edfaff;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        padding: 13px;
+        border-radius: 12px;
+        margin: 2px 0;
+      }
+      .nav:hover,
+      .nav.active {
+        background: #ffffff21;
+        color: white;
+      }
+      .nav.active {
+        box-shadow: inset 4px 0 var(--gold);
+      }
+      .nav span:first-child {
+        font-size: 20px;
+      }
+      .sidefoot {
+        margin-top: auto;
+        padding: 20px 10px 2px;
+        color: #abc2f5;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+      .main {
+        flex: 1;
+        min-width: 0;
+      }
+      .top {
+        padding: 17px 32px;
+        background: #ffffffbc;
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .top-start {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+      .crumb {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .topright {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .pill {
+        padding: 8px 12px;
+        border-radius: 25px;
+        background: #e8f8f6;
+        color: #00796a;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #087fa9;
+        color: white;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+      }
+      .content {
+        max-width: 1450px;
+        margin: auto;
+        padding: 28px 32px 60px;
+      }
+      .hero {
+        background: linear-gradient(105deg, #0570b6, #0aa4cf 60%, #08b8ad);
+        color: #fff;
+        border-radius: 23px;
+        padding: 29px 33px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .hero:after {
+        content: "";
+        position: absolute;
+        right: -30px;
+        top: -65px;
+        width: 300px;
+        height: 280px;
+        border: 42px solid #ffffff16;
+        border-radius: 50%;
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 2px;
+        font-weight: 800;
+        color: #ffdf5e;
+      }
+      .hero h1 {
+        font-size: 30px;
+        margin: 9px 0 10px;
+        line-height: 1.16;
+      }
+      .hero p {
+        max-width: 710px;
+        line-height: 1.7;
+        color: #e2eeff;
+        margin: 0;
+      }
+      .hero .actions {
+        margin-top: 20px;
+      }
+      .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 11px 16px;
+        font-weight: 700;
+        transition: 0.15s;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .primary {
+        background: var(--gold);
+        color: var(--navy);
+      }
+      .secondary {
+        background: #e7f2ff;
+        color: #0450a9;
+      }
+      .outline {
+        background: white;
+        border: 1px solid var(--line);
+        color: var(--navy);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 22px 0;
+      }
+      .stat {
+        background: #ffffffdf;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        padding: 19px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+      .stat .label {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 14px;
+      }
+      .stat strong {
+        font-size: 29px;
+        color: var(--navy);
+      }
+      .stat small {
+        display: block;
+        font-size: 11px;
+        color: #72809a;
+        margin-top: 9px;
+      }
+      .stat i {
+        position: absolute;
+        right: 18px;
+        top: 17px;
+        font-size: 25px;
+        font-style: normal;
+      }
+      .panel {
+        background: #fff;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        padding: 22px;
+        box-shadow: var(--shadow);
+        margin-top: 18px;
+      }
+      .panelhead {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 19px;
+      }
+      .panel h2 {
+        font-size: 18px;
+        color: var(--navy);
+        margin: 0 0 5px;
+      }
+      .sub {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 18px;
+      }
+      .progressrow {
+        margin: 17px 0;
+      }
+      .prtop {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+      .bar {
+        height: 10px;
+        background: #eaf0f7;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .bar > span {
+        height: 100%;
+        display: block;
+        border-radius: 20px;
+      }
+      .chip {
+        font-size: 11px;
+        font-weight: 800;
+        padding: 5px 9px;
+        border-radius: 20px;
+        display: inline-flex;
+      }
+      .red {
+        color: #b51c3a;
+        background: #ffe5ec;
+      }
+      .yellow {
+        color: #946000;
+        background: #fff1c0;
+      }
+      .green {
+        color: #08796e;
+        background: #dff6ef;
+      }
+      .blue {
+        color: #1257af;
+        background: #e3efff;
+      }
+      .tablewrap {
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+      th {
+        text-align: left;
+        background: #f6f8fc;
+        color: #677491;
+        font-size: 11px;
+        letter-spacing: 0.4px;
+        padding: 13px 11px;
+      }
+      td {
+        border-bottom: 1px solid #eff2f7;
+        padding: 12px 11px;
+        font-size: 12px;
+      }
+      td strong {
+        color: var(--ink);
+      }
+      .searchline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin: 16px 0;
+      }
+      .field {
+        border: 1px solid #dbe2ef;
+        border-radius: 10px;
+        padding: 11px 12px;
+        background: white;
+        outline: none;
+        min-width: 0;
+        color: var(--ink);
+      }
+      .field:focus {
+        border-color: #138bce;
+        box-shadow: 0 0 0 3px #168cd31b;
+      }
+      .searchline input {
+        flex: 1;
+        min-width: 180px;
+      }
+      .mini {
+        font-size: 11px;
+        color: #66738a;
+      }
+      .linkbutton {
+        border: 0;
+        background: #e5f4f7;
+        border-radius: 8px;
+        color: #087e8f;
+        font-weight: 800;
+        padding: 7px 10px;
+      }
+      .empty {
+        padding: 40px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .formgrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .group {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .group label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .group .field {
+        width: 100%;
+      }
+      .full {
+        grid-column: 1/-1;
+      }
+      textarea.field {
+        min-height: 95px;
+        resize: vertical;
+      }
+      .notice {
+        background: #fff7df;
+        border: 1px solid #ffdfa0;
+        color: #78520a;
+        padding: 13px 15px;
+        border-radius: 11px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .step {
+        background: #f3f7fb;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 16px 12px;
+        text-align: center;
+      }
+      .step b {
+        background: var(--teal);
+        color: white;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 10px;
+      }
+      .step strong {
+        font-size: 12px;
+        display: block;
+      }
+      .step small {
+        font-size: 11px;
+        line-height: 1.5;
+        color: var(--muted);
+        display: block;
+        margin-top: 8px;
+      }
+      .gridcards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+      .infocard {
+        border: 1px solid var(--line);
+        background: #fbfcff;
+        border-radius: 15px;
+        padding: 18px;
+      }
+      .infocard h3 {
+        color: var(--navy);
+        margin: 0 0 10px;
+      }
+      .infocard p {
+        font-size: 12px;
+        line-height: 1.7;
+        color: #5d6a82;
+      }
+      .infonumber {
+        font-size: 25px;
+        font-weight: 800;
+        color: var(--teal);
+      }
+      .official-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 18px;
+      }
+      .level-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .level-card {
+        min-width: 0;
+        padding: 14px;
+        border: 1px solid #d8eef2;
+        border-radius: 13px;
+        background: linear-gradient(145deg, #f8fdff, #edfbfc);
+      }
+      .level-card span,
+      .level-card small {
+        display: block;
+        color: var(--muted);
+      }
+      .level-card span {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+      .level-card strong {
+        display: block;
+        margin: 8px 0 4px;
+        color: var(--navy);
+        font-size: 24px;
+      }
+      .condition-total {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 13px;
+        background: #effbfc;
+      }
+      .condition-total strong {
+        color: var(--navy);
+        font-size: 28px;
+      }
+      .condition-row {
+        margin-top: 15px;
+      }
+      .condition-row .prtop strong {
+        color: var(--navy);
+      }
+      .source-link {
+        color: #00758a;
+        font-weight: 800;
+      }
+      .priority-code {
+        display: inline-grid;
+        min-width: 36px;
+        height: 28px;
+        padding: 0 8px;
+        place-items: center;
+        border-radius: 8px;
+        background: #ffe6e6;
+        color: #b52235;
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .priority-code.p2 {
+        background: #fff1c7;
+        color: #8a5b00;
+      }
+      .priority-code.p3 {
+        background: #dff6ef;
+        color: #08796e;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        background: #082569;
+        color: white;
+        border-radius: 12px;
+        padding: 14px 20px;
+        z-index: 10;
+        box-shadow: var(--shadow);
+        display: none;
+      }
+      @media (max-width: 1050px) {
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .gridcards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .official-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 730px) {
+        .side {
+          position: fixed;
+          inset: 0 auto 0 0;
+          z-index: 1001;
+          display: flex;
+          width: min(300px, 86vw);
+          height: 100dvh;
+          overflow-y: auto;
+          transform: translateX(-105%);
+          box-shadow: 20px 0 45px #00375b3d;
+        }
+        .side.mobile-open {
+          transform: translateX(0);
+        }
+        .menu-toggle {
+          display: inline-flex;
+        }
+        .menu-close {
+          display: grid;
+        }
+        .menu-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 1000;
+          display: block;
+          visibility: hidden;
+          border: 0;
+          background: #002d4d80;
+          opacity: 0;
+          transition:
+            opacity 0.25s ease,
+            visibility 0.25s ease;
+        }
+        .menu-overlay.visible {
+          visibility: visible;
+          opacity: 1;
+        }
+        .top {
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          padding: 12px 14px;
+        }
+        .crumb {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .content {
+          padding: 18px 14px;
+        }
+        .hero {
+          padding: 23px;
+        }
+        .hero h1 {
+          font-size: 24px;
+        }
+        .stats {
+          grid-template-columns: 1fr 1fr;
+          gap: 9px;
+        }
+        .stat {
+          padding: 14px;
+        }
+        .stat strong {
+          font-size: 23px;
+        }
+        .formgrid,
+        .two,
+        .gridcards {
+          grid-template-columns: 1fr;
+        }
+        .level-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .flow {
+          grid-template-columns: 1fr 1fr;
+        }
+        .topright .pill {
+          display: none;
+        }
+      }
+      @media (max-width: 430px) {
+        .stats,
+        .detailstats,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+        .level-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero .actions {
+          display: grid;
+          gap: 9px;
+        }
+        .hero .actions .btn {
+          width: 100%;
+        }
+        .toast {
+          right: 14px;
+          bottom: 14px;
+          left: 14px;
+        }
+      }
+    </style>
+    <!-- Visual refinements for the prototype -->
+    <style>
+      .source-note {
+        background: linear-gradient(105deg, #ffffffee, #d7faffed);
+        border: 1px solid #8ae5e8;
+        border-left: 5px solid #08b6a7;
+        box-shadow: 0 10px 30px #168aa818;
+        padding: 15px 18px;
+        border-radius: 17px;
+        margin-bottom: 18px;
+        display: flex;
+        gap: 7px;
+        flex-direction: column;
+        color: #116888;
+        line-height: 1.5;
+      }
+      .source-note strong {
+        color: #007e90;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+      }
+      .source-note span {
+        font-size: 12px;
+      }
+      .panel,
+      .card,
+      .box {
+        backdrop-filter: blur(4px);
+      }
+      .brandmark {
+        background: linear-gradient(135deg, #f3c623, #14dfc0) !important;
+      }
+      .nav.active {
+        background: #ffffff36 !important;
+        box-shadow: inset 4px 0 #f3c623 !important;
+      }
+      .primary {
+        background: linear-gradient(120deg, #00d2b5, #008ba7) !important;
+        color: white !important;
+      }
+      .stat {
+        background: #ffffffdb !important;
+      }
+      .pill {
+        background: #ddfcf5 !important;
+        color: #008774 !important;
+      }
+      .hero {
+        box-shadow: 0 25px 40px #086fad33 !important;
+      }
+    </style>
+    <!-- School detail page -->
+    <style>
+      .detailhero {
+        border-radius: 23px;
+        padding: 27px 30px;
+        background: linear-gradient(115deg, #035d9e, #088395 75%, #00bda8);
+        color: #fff;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .detailhero h1 {
+        margin: 10px 0;
+        font-size: 28px;
+      }
+      .detailhero p {
+        margin: 0;
+        color: #dafbff;
+      }
+      .detailstats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .detailmini {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        padding: 15px;
+        min-height: 82px;
+      }
+      .detailmini small {
+        display: block;
+        color: #7595a9;
+        margin-bottom: 9px;
+      }
+      .detailmini b {
+        color: #064577;
+      }
+      .detailkv {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: 13px;
+        border-top: 1px solid var(--line);
+        padding: 19px 0;
+      }
+      .detailkv span {
+        color: #7595a9;
+      }
+      .detailkv b {
+        font-weight: 650;
+        overflow-wrap: anywhere;
+      }
+      .sourceblock {
+        background: #f0fbfe;
+        border: 1px solid #d1ebf1;
+        border-radius: 14px;
+        padding: 18px;
+        white-space: pre-wrap;
+        line-height: 1.7;
+        font-size: 13px;
+        max-height: 390px;
+        overflow: auto;
+      }
+      .panel h3 {
+        font-size: 14px;
+        color: #07517a;
+      }
+      .photozone {
+        border: 2px dashed #7cdae0;
+        border-radius: 14px;
+        background: #e8fdff;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: 800;
+      }
+      .photozone small {
+        font-weight: 400;
+        margin: 7px 0;
+        color: #568296;
+      }
+      .photogrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+        margin: 12px 0;
+      }
+      .photogrid img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+      .photogrid .photobox {
+        position: relative;
+      }
+      .photogrid button {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        border: 0;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        background: #fff;
+      }
+      .detailform {
+        display: grid;
+        gap: 13px;
+      }
+      .timeline {
+        padding-left: 22px;
+        border-left: 2px solid #a6e0e5;
+        margin: 8px;
+      }
+      .timeitem {
+        padding: 0 0 24px 16px;
+        position: relative;
+      }
+      .timeitem:before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #00bda8;
+        position: absolute;
+        left: -29px;
+        top: 4px;
+        border: 3px solid #fff;
+      }
+      .timeitem b {
+        display: block;
+        color: #07517a;
+      }
+      .timeitem small {
+        color: #7190a1;
+      }
+      .timeitem p {
+        white-space: pre-wrap;
+        line-height: 1.6;
+        margin: 8px 0 0;
+      }
+      .nextsteps {
+        display: grid;
+        gap: 12px;
+      }
+      .nextsteps > div {
+        background: #f0fbfc;
+        padding: 12px;
+        border-radius: 11px;
+      }
+      .nextsteps small {
+        display: block;
+        color: #60899f;
+        margin-top: 5px;
+      }
+      .clickable-name {
+        background: none;
+        border: 0;
+        padding: 0;
+        text-align: left;
+        font-weight: 800;
+        color: #07517a;
+        cursor: pointer;
+      }
+      .clickable-name:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 900px) {
+        .detailstats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 570px) {
+        .detailhero {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .detailstats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .detailkv {
+          grid-template-columns: 1fr;
+          gap: 5px;
+        }
+        .photogrid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 430px) {
+        .detailstats {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="side" id="mobileSidebar">
+        <div class="brand">
+          <div class="brandmark">S</div>
+          <div>
+            <strong>SAPE</strong
+            ><small>Dinas Pendidikan<br />Provinsi DKI Jakarta</small>
+          </div>
+          <button
+            class="menu-close"
+            id="menuClose"
+            type="button"
+            aria-label="Tutup menu"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="slabel">MENU REHABILITASI</div>
+        <button class="nav active" data-page="dashboard">
+          <span>▦</span> Dashboard</button
+        ><button class="nav" data-page="sekolah">
+          <span>▤</span> Data Sekolah</button
+        ><button class="nav" data-page="detail">
+          <span>▣</span> Detail & Verifikasi Sekolah</button
+        ><button class="nav" data-page="form">
+          <span>✎</span> Inventarisasi Kondisi</button
+        ><button class="nav" data-page="prioritas">
+          <span>◈</span> Prioritas Penanganan</button
+        ><button class="nav" data-page="monitor">
+          <span>◷</span> Monitoring Rehabilitasi
+        </button>
+        <div class="sidefoot">
+          Prototipe frontend · Data sumber Excel<br />Contoh data: Excel Pasar
+          Rebo<br />© SAPE — Konsep UI
+        </div>
+      </aside>
+      <button
+        class="menu-overlay"
+        id="menuOverlay"
+        type="button"
+        aria-label="Tutup menu navigasi"
+        tabindex="-1"
+      ></button>
+      <main class="main">
+        <header class="top">
+          <div class="top-start">
+            <button
+              class="menu-toggle"
+              id="menuToggle"
+              type="button"
+              aria-label="Buka menu navigasi"
+              aria-controls="mobileSidebar"
+              aria-expanded="false"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <div class="crumb">
+              SAPE / Layanan Pendidikan /
+              <span id="breadcrumb">Dashboard Rehabilitasi</span>
+            </div>
+          </div>
+          <div class="topright">
+            <span class="pill">● DASHBOARD SARPRAS · DKI JAKARTA</span
+            ><span class="avatar">AD</span>
+          </div>
+        </header>
+        <div class="content">
+          <section id="detail" class="hidden">
+            <div class="detailhero">
+              <div>
+                <div class="eyebrow">PROFIL KONDISI SEKOLAH · DATA CONTOH</div>
+                <h1 id="detNama">Pilih sekolah dari daftar</h1>
+                <p id="detSubtitle">
+                  Informasi inventarisasi, bukti, dan tindak lanjut pada satu
+                  halaman.
+                </p>
+              </div>
+              <button class="btn outline" id="backToList">
+                ← Kembali ke Daftar
+              </button>
+            </div>
+            <div class="detailstats">
+              <div class="detailmini">
+                <small>NPSN</small><b id="detNpsn">—</b>
+              </div>
+              <div class="detailmini">
+                <small>Wilayah</small><b id="detWilayah">—</b>
+              </div>
+              <div class="detailmini">
+                <small>Kategori dari sumber Excel</small>
+                <div id="detKondisi">—</div>
+              </div>
+              <div class="detailmini">
+                <small>Status simulasi</small>
+                <div id="detStatus">—</div>
+              </div>
+            </div>
+            <div class="two" style="align-items: start">
+              <div>
+                <article class="panel">
+                  <div class="panelhead">
+                    <div>
+                      <h2>Identitas & Kondisi Bangunan</h2>
+                      <span class="sub"
+                        >Sesuai informasi yang tercantum dalam file sumber</span
+                      >
+                    </div>
+                  </div>
+                  <div class="detailkv">
+                    <span>Nama sekolah</span><b id="detNama2">—</b
+                    ><span>Jenjang</span><b id="detJenjang">—</b
+                    ><span>Alamat</span><b id="detAlamat">—</b
+                    ><span>Objek tercatat</span><b id="detObjek">—</b>
+                  </div>
+                  <h3>Uraian Temuan</h3>
+                  <div id="detTemuan" class="sourceblock"></div>
+                  <div class="notice" style="margin-top: 15px">
+                    Klasifikasi kerusakan berasal dari file sumber, bukan
+                    penetapan hasil asesmen teknis melalui prototipe SAPE. Perlu
+                    pemeriksaan oleh pejabat/tenaga teknis berwenang sebelum
+                    menentukan jenis pekerjaan dan prioritas.
+                  </div>
+                </article>
+                <article class="panel">
+                  <div class="panelhead">
+                    <div>
+                      <h2>Dokumentasi Kerusakan</h2>
+                      <span class="sub"
+                        >Lampiran foto tambahan hanya tersimpan di sesi browser
+                        ini</span
+                      >
+                    </div>
+                  </div>
+                  <label class="photozone" for="detailPhotos"
+                    >📷 Tambahkan foto temuan (opsional)<small
+                      >JPG/PNG/WebP; maksimal 5 MB per foto</small
+                    ></label
+                  ><input
+                    id="detailPhotos"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    class="hidden"
+                  />
+                  <div id="photoGallery" class="photogrid"></div>
+                  <small class="mini"
+                    >File Excel sumber tidak menyediakan foto langsung di
+                    halaman ini. Foto unggahan di sini hanyalah bukti simulasi
+                    dan tidak dikirim ke server.</small
+                  >
+                </article>
+              </div>
+              <div>
+                <article class="panel">
+                  <div class="panelhead">
+                    <div>
+                      <h2>Verifikasi & Tindak Lanjut</h2>
+                      <span class="sub">Simulasi alur pengelolaan usulan</span>
+                    </div>
+                  </div>
+                  <form id="detailForm" class="detailform">
+                    <div class="group">
+                      <label for="detInputStatus">Status penanganan</label
+                      ><select class="field" id="detInputStatus">
+                        <option>Belum Ditindaklanjuti</option>
+                        <option>Dalam Verifikasi</option>
+                        <option>Diusulkan</option>
+                        <option>Dalam Penanganan</option>
+                        <option>Selesai</option>
+                      </select>
+                    </div>
+                    <div class="group">
+                      <label for="detPetugas"
+                        >Petugas/penanggung jawab (simulasi)</label
+                      ><input
+                        class="field"
+                        id="detPetugas"
+                        placeholder="Contoh: Tim Prasarana"
+                      />
+                    </div>
+                    <div class="group">
+                      <label for="detCatatan"
+                        >Catatan verifikasi / tindak lanjut</label
+                      ><textarea
+                        class="field"
+                        id="detCatatan"
+                        placeholder="Masukkan hasil pemeriksaan, kebutuhan klarifikasi, atau rekomendasi tindak lanjut..."
+                      ></textarea>
+                    </div>
+                    <button class="btn primary" type="submit">
+                      Simpan catatan simulasi
+                    </button>
+                  </form>
+                </article>
+                <article class="panel">
+                  <div class="panelhead">
+                    <div>
+                      <h2>Riwayat Proses</h2>
+                      <span class="sub">Jejak pembaruan dalam prototipe</span>
+                    </div>
+                  </div>
+                  <div id="detHistory" class="timeline"></div>
+                </article>
+                <article class="panel">
+                  <div class="panelhead">
+                    <div><h2>Langkah Berikutnya</h2></div>
+                  </div>
+                  <div class="nextsteps">
+                    <div>
+                      <strong>01 · Klarifikasi data</strong
+                      ><small
+                        >Periksa kelengkapan NPSN, alamat, dan temuan.</small
+                      >
+                    </div>
+                    <div>
+                      <strong>02 · Asesmen teknis</strong
+                      ><small
+                        >Validasi kondisi dan kategori kerusakan oleh pihak
+                        berwenang.</small
+                      >
+                    </div>
+                    <div>
+                      <strong>03 · Prioritas & usulan</strong
+                      ><small
+                        >Pertimbangkan keselamatan, kebutuhan layanan, dan
+                        anggaran.</small
+                      >
+                    </div>
+                    <div>
+                      <strong>04 · Monitoring</strong
+                      ><small
+                        >Catat proses tindak lanjut hingga penyelesaian.</small
+                      >
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+          <section id="dashboard">
+            <div class="hero">
+              <div class="eyebrow">SAPE • PUSAT KENDALI SARANA PRASARANA</div>
+              <h1>
+                Prioritas Rehab Lebih Terukur,<br />Keputusan Lebih Cepat.
+              </h1>
+              <p>
+                Pantau 2.019 sekolah negeri, kondisi ruang, usulan rehabilitasi,
+                dan rekomendasi prioritas penanganan dalam satu dashboard.
+              </p>
+              <div class="actions">
+                <button class="btn primary" data-go="form">
+                  + Tambah Hasil Inventarisasi
+                </button>
+                <button class="btn secondary" data-go="sekolah">
+                  Lihat Data Sekolah →
+                </button>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat">
+                <i>🏫</i>
+                <div class="label">Sekolah negeri</div>
+                <strong>2.019</strong
+                ><small>Seluruh jenjang di DKI Jakarta</small>
+              </div>
+              <div class="stat">
+                <i>🎓</i>
+                <div class="label">Jenjang pendidikan</div>
+                <strong>7</strong><small>PAUD hingga PKBM</small>
+              </div>
+              <div class="stat">
+                <i>⚠️</i>
+                <div class="label">Ruang terindikasi rusak</div>
+                <strong>16.997</strong><small>Ringan, sedang, dan berat</small>
+              </div>
+              <div class="stat">
+                <i>🛠️</i>
+                <div class="label">Ruang rusak berat</div>
+                <strong>1.563</strong><small>Kandidat asesmen prioritas</small>
+              </div>
+            </div>
+            <div class="official-grid">
+              <div class="panel">
+                <div class="panelhead">
+                  <div>
+                    <h2>Sebaran Sekolah Negeri per Jenjang</h2>
+                    <div class="sub">Total 2.019 satuan pendidikan negeri</div>
+                  </div>
+                  <span class="chip green">Data dashboard resmi</span>
+                </div>
+                <div class="level-grid">
+                  <div class="level-card">
+                    <span>SD</span><strong>1.305</strong
+                    ><small>64,6% populasi</small>
+                  </div>
+                  <div class="level-card">
+                    <span>SMP</span><strong>302</strong
+                    ><small>15,0% populasi</small>
+                  </div>
+                  <div class="level-card">
+                    <span>PAUD</span><strong>167</strong
+                    ><small>8,3% populasi</small>
+                  </div>
+                  <div class="level-card">
+                    <span>SMA</span><strong>119</strong
+                    ><small>5,9% populasi</small>
+                  </div>
+                  <div class="level-card">
+                    <span>SMK</span><strong>74</strong
+                    ><small>3,7% populasi</small>
+                  </div>
+                  <div class="level-card">
+                    <span>PKBM</span><strong>39</strong
+                    ><small>1,9% populasi</small>
+                  </div>
+                  <div class="level-card">
+                    <span>SLB</span><strong>13</strong
+                    ><small>0,6% populasi</small>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panelhead">
+                  <div>
+                    <h2>Kondisi Ruang Sekolah</h2>
+                    <div class="sub">Lima jenis ruang utama pada dashboard</div>
+                  </div>
+                  <span class="chip green">Data resmi</span>
+                </div>
+                <div class="condition-total">
+                  <div>
+                    <small>Total ruang terindikasi rusak</small>
+                    <strong>16.997</strong>
+                  </div>
+                  <span class="mini">Tidak sama dengan jumlah sekolah</span>
+                </div>
+                <div class="condition-row">
+                  <div class="prtop">
+                    <span>Rusak ringan</span><strong>12.730 · 74,9%</strong>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 74.9%; background: #17a779"></span>
+                  </div>
+                </div>
+                <div class="condition-row">
+                  <div class="prtop">
+                    <span>Rusak sedang</span><strong>2.704 · 15,9%</strong>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 15.9%; background: #e6b51a"></span>
+                  </div>
+                </div>
+                <div class="condition-row">
+                  <div class="prtop">
+                    <span>Rusak berat</span><strong>1.563 · 9,2%</strong>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 9.2%; background: #e36646"></span>
+                  </div>
+                </div>
+                <div class="mini" style="margin-top: 14px">
+                  Ruang yang dihitung: kelas, guru, kepala sekolah,
+                  perpustakaan, dan tata usaha. Terdapat pula 82.864 ruang
+                  berkondisi baik dan 29.216 tanpa keterangan.
+                </div>
+              </div>
+            </div>
+            <div class="layout">
+              <div class="panel">
+                <div class="panelhead">
+                  <div>
+                    <h2>Kondisi 26 Usulan Inventarisasi</h2>
+                    <div class="sub">Sampel kerja Kecamatan Pasar Rebo</div>
+                  </div>
+                  <span class="chip blue">Data inventarisasi</span>
+                </div>
+                <div id="categoryBars"></div>
+              </div>
+              <div class="panel">
+                <div class="panelhead">
+                  <div>
+                    <h2>Alur Pengelolaan</h2>
+                    <div class="sub">Tahapan layanan yang direncanakan</div>
+                  </div>
+                </div>
+                <div class="progressrow">
+                  <div class="prtop">
+                    <span>1. Pendataan dan bukti foto</span><span>Input</span>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 100%; background: var(--blue)"></span>
+                  </div>
+                </div>
+                <div class="progressrow">
+                  <div class="prtop">
+                    <span>2. Pemeriksaan teknis</span><span>Verifikasi</span>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 78%; background: var(--orange)"></span>
+                  </div>
+                </div>
+                <div class="progressrow">
+                  <div class="prtop">
+                    <span>3. Usulan dan penentuan prioritas</span
+                    ><span>Penilaian</span>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 56%; background: var(--teal)"></span>
+                  </div>
+                </div>
+                <div class="progressrow">
+                  <div class="prtop">
+                    <span>4. Monitoring penanganan</span
+                    ><span>Tindak lanjut</span>
+                  </div>
+                  <div class="bar">
+                    <span style="width: 36%; background: #7269db"></span>
+                  </div>
+                </div>
+                <div class="mini">
+                  Batang di atas adalah ilustrasi tahapan, bukan progres proyek
+                  riil.
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panelhead">
+                <div>
+                  <h2>Rekomendasi Rehab Prioritas</h2>
+                  <div class="sub">
+                    Penyaringan awal berdasarkan tingkat kerusakan dan kata
+                    kunci risiko
+                  </div>
+                </div>
+                <button class="btn outline" data-go="sekolah">
+                  Lihat Seluruhnya
+                </button>
+              </div>
+              <div class="tablewrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Prioritas</th>
+                      <th>Satuan Pendidikan</th>
+                      <th>Jenjang</th>
+                      <th>Kondisi</th>
+                      <th>Skor</th>
+                      <th>Rekomendasi Awal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recommendationRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section id="sekolah" class="hidden">
+            <div class="panel">
+              <div class="panelhead">
+                <div>
+                  <h2>Data Sekolah dan Kategori Kerusakan · Pasar Rebo</h2>
+                  <div class="sub">
+                    Inventarisasi terpusat dengan pencarian dan penyaringan
+                  </div>
+                </div>
+                <button class="btn primary" data-go="form">
+                  + Tambah Pendataan
+                </button>
+              </div>
+              <div class="searchline">
+                <input
+                  class="field"
+                  id="search"
+                  placeholder="Cari nama sekolah, NPSN, atau wilayah..."
+                /><select class="field" id="filterKondisi">
+                  <option value="">Semua klasifikasi</option>
+                  <option>Belum Dinilai</option>
+                  <option>Ringan</option>
+                  <option>Sedang</option>
+                  <option>Berat</option></select
+                ><select class="field" id="filterStatus">
+                  <option value="">Semua status</option>
+                  <option>Belum Ditindaklanjuti</option>
+                  <option>Dalam Verifikasi</option>
+                  <option>Diusulkan</option>
+                  <option>Dalam Penanganan</option>
+                  <option>Selesai</option></select
+                ><button class="btn outline" id="export">Ekspor CSV</button>
+              </div>
+              <div class="tablewrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sekolah/NPSN</th>
+                      <th>Wilayah</th>
+                      <th>Kondisi</th>
+                      <th>Objek</th>
+                      <th>Status</th>
+                      <th>Pembaruan</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="schoolRows"></tbody>
+                </table>
+              </div>
+              <div class="mini" style="margin-top: 13px">
+                Data pada prototipe tersimpan hanya selama halaman terbuka.
+                Belum terhubung ke basis data atau server.
+              </div>
+            </div>
+          </section>
+          <section id="form" class="hidden">
+            <div class="panel">
+              <div class="panelhead">
+                <div>
+                  <h2>Formulir Inventarisasi Kondisi Sekolah</h2>
+                  <div class="sub">
+                    Pencatatan awal sebagai bahan pemeriksaan teknis dan usulan
+                    penanganan
+                  </div>
+                </div>
+                <span class="chip yellow">Bukan penetapan teknis otomatis</span>
+              </div>
+              <form id="inventoryForm">
+                <div class="formgrid">
+                  <div class="group">
+                    <label for="nama">Nama Sekolah *</label
+                    ><input
+                      class="field"
+                      id="nama"
+                      name="nama"
+                      required
+                      placeholder="Contoh: SDN 01"
+                    />
+                  </div>
+                  <div class="group">
+                    <label for="npsn">NPSN (jika tersedia)</label
+                    ><input
+                      class="field"
+                      id="npsn"
+                      name="npsn"
+                      placeholder="8 digit"
+                      inputmode="numeric"
+                      maxlength="8"
+                    />
+                  </div>
+                  <div class="group">
+                    <label for="wilayah">Wilayah *</label
+                    ><select class="field" id="wilayah" name="wilayah" required>
+                      <option value="">Pilih wilayah</option>
+                      <option>Jakarta Pusat</option>
+                      <option>Jakarta Utara</option>
+                      <option>Jakarta Barat</option>
+                      <option>Jakarta Selatan</option>
+                      <option>Jakarta Timur</option>
+                      <option>Kepulauan Seribu</option>
+                    </select>
+                  </div>
+                  <div class="group">
+                    <label for="objek">Objek yang Dinilai *</label
+                    ><select class="field" id="objek" name="objek" required>
+                      <option>Ruang kelas</option>
+                      <option>Atap</option>
+                      <option>Struktur bangunan</option>
+                      <option>Toilet/sanitasi</option>
+                      <option>Laboratorium</option>
+                      <option>Sarana penunjang</option>
+                      <option>Lainnya</option>
+                    </select>
+                  </div>
+                  <div class="group">
+                    <label for="kondisi">Klasifikasi Awal *</label
+                    ><select class="field" id="kondisi" name="kondisi" required>
+                      <option>Belum Dinilai</option>
+                      <option>Ringan</option>
+                      <option>Sedang</option>
+                      <option>Berat</option>
+                    </select>
+                  </div>
+                  <div class="group">
+                    <label for="status">Status Tindak Lanjut *</label
+                    ><select class="field" id="status" name="status" required>
+                      <option>Belum Ditindaklanjuti</option>
+                      <option>Dalam Verifikasi</option>
+                      <option>Diusulkan</option>
+                      <option>Dalam Penanganan</option>
+                      <option>Selesai</option>
+                    </select>
+                  </div>
+                  <div class="group full">
+                    <label for="temuan">Uraian Temuan / Kerusakan *</label
+                    ><textarea
+                      class="field"
+                      id="temuan"
+                      name="temuan"
+                      required
+                      placeholder="Tuliskan lokasi, gejala kerusakan, dan hasil pengamatan awal..."
+                    ></textarea>
+                  </div>
+                  <div class="group full">
+                    <label for="bukti">Dokumentasi Pendukung (opsional)</label
+                    ><input
+                      class="field"
+                      id="bukti"
+                      type="file"
+                      accept="image/*,.pdf"
+                      multiple
+                    />
+                    <div class="mini" id="fileNames">
+                      File tidak diunggah ke server dalam versi frontend ini;
+                      hanya nama berkas yang ditampilkan.
+                    </div>
+                  </div>
+                  <div class="full notice">
+                    ⚠️ Kategori ringan, sedang, dan berat pada formulir adalah
+                    <strong>penilaian awal</strong>. Klasifikasi resmi,
+                    prioritas pekerjaan, dan rekomendasi rehabilitasi tetap
+                    memerlukan pemeriksaan petugas/tenaga teknis berwenang
+                    sesuai ketentuan.
+                  </div>
+                  <div
+                    class="full"
+                    style="display: flex; gap: 10px; flex-wrap: wrap"
+                  >
+                    <button class="btn primary" type="submit">
+                      Simpan Data Contoh</button
+                    ><button class="btn outline" type="reset">
+                      Kosongkan Formulir
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </section>
+          <section id="prioritas" class="hidden">
+            <div class="panel">
+              <div class="panelhead">
+                <div>
+                  <h2>Rekomendasi Prioritas Rehabilitasi</h2>
+                  <div class="sub">
+                    Skor awal berdasarkan kategori kerusakan dan indikasi risiko
+                    pada uraian temuan
+                  </div>
+                </div>
+                <span class="chip yellow"
+                  >Rekomendasi perlu validasi teknis</span
+                >
+              </div>
+              <div class="notice">
+                P1 memerlukan pemeriksaan segera, P2 masuk verifikasi terjadwal,
+                dan P3 dapat diarahkan ke pemeliharaan. Skor ini membantu
+                triase, bukan menggantikan keputusan teknis dan penganggaran.
+              </div>
+              <div class="tablewrap" style="margin-top: 19px">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Prioritas</th>
+                      <th>Nama Sekolah</th>
+                      <th>Objek</th>
+                      <th>Klasifikasi Awal</th>
+                      <th>Status Usulan</th>
+                      <th>Skor & Rekomendasi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="priorityRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section id="monitor" class="hidden">
+            <div class="panel">
+              <div class="panelhead">
+                <div>
+                  <h2>Monitoring Tindak Lanjut Rehabilitasi</h2>
+                  <div class="sub">
+                    Pantau perkembangan pendataan, verifikasi, usulan, dan
+                    pelaksanaan
+                  </div>
+                </div>
+              </div>
+              <div id="statusBars"></div>
+            </div>
+            <div class="panel">
+              <div class="panelhead">
+                <div>
+                  <h2>Riwayat Penanganan</h2>
+                  <div class="sub">
+                    Klik “Ubah Status” untuk simulasi pembaruan data
+                  </div>
+                </div>
+              </div>
+              <div class="tablewrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sekolah</th>
+                      <th>Objek</th>
+                      <th>Klasifikasi</th>
+                      <th>Status saat ini</th>
+                      <th>Tanggal</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="monitorRows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script>
+      // ---------------------------------------------------------------------
+      // Seed data
+      // ---------------------------------------------------------------------
+      const original = [
+        {
+          id: 1,
+          nama: "SDN Baru 05 Pagi",
+          npsn: "20108812",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Area Sekolah sudah 95 % Rata masih ada 1 bangunan yang belum di robohkan",
+          date: "—",
+          jenjang: "SD",
+          alamat:
+            "Jalan Puskesmas No.34 RT.02 RW,01 Kelurahan Baru Kecamatan Pasar Rebo",
+        },
+        {
+          id: 2,
+          nama: "SMPN 251 Jakarta",
+          npsn: "20103582",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah sangat tua dan keropos, dan sudah didata berkali-kali untuk direnov total tapi belum ada tindak lanjut",
+          date: "—",
+          jenjang: "SMP",
+          alamat:
+            "Jalan Mawar Kampung Asem, RT.10/RW.1, Cijantung, Kec. Ps. Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770",
+        },
+        {
+          id: 3,
+          nama: "TK Negeri Pasar Rebo 02",
+          npsn: "20177833",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "satu lingkungan dengan SDN Gedong 010 Pagi,sudah didata sebanyak 3 kali untuk revitalisasi kemendikdasmen namun belum ada tindak lanjut",
+          date: "—",
+          jenjang: "PAUD",
+          alamat: "Jl. H. Taiman Barat RT.05 RW.10, Gedong Pasar Rebo",
+        },
+        {
+          id: 4,
+          nama: "SMP Negeri 102 Jakarta",
+          npsn: "20103507",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Toilet murid laki-laki lt. 4 rusak, air tidak keluar dan saat ini sedang dalam proses perbaikan",
+          date: "—",
+          jenjang: "SMP",
+          alamat:
+            "Jl. Sederhana Raya RT.002/RW.006 Kel. Gedong Kec. Pasar Rebo",
+        },
+        {
+          id: 5,
+          nama: "SMAN 106 Jakarta",
+          npsn: "20103289",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Kondisi bangunan sekolah sudah tua,  mulai keropos, instalasi listrik berantakan dan sudah didata oleh sudin citata dua kali tetapi belum ada tindak lanjut dan dikategorikan rusak sedang.",
+          date: "—",
+          jenjang: "SMA",
+          alamat: "Jl. Gandaria I No.12, RT.12/RW.9, Pekayon, Kec. Ps. Rebo",
+        },
+        {
+          id: 6,
+          nama: "SDN PEKAYON 03",
+          npsn: "20108836",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah tua dibangun tahun 1971, rehab berat terakhir tahun 2010 , kondisi bangunan terutama bagian plafon banyak kerusakan",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Gandaria I No. 1 RT.008/009, Pekayon, Pasar Rebo",
+        },
+        {
+          id: 7,
+          nama: "SMPN 179 Jakarta",
+          npsn: "20103614",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan gedung tahun 2019. Kerusakan tangga arah kiri gedung, tangga 1 ke lantai 2 dan tangga 2 ke lantai 3",
+          date: "—",
+          jenjang: "SMP",
+          alamat:
+            "Jl.Kalisari Raya,Rt.02,Rw03 Kalisari Pasar Rebo Jakarta Timur",
+        },
+        {
+          id: 8,
+          nama: "SDN Cijantung 05 Pagi",
+          npsn: "20108816",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah terdapat basement, pembuangan air posisi di basement sehingga sering banjir disaat hujan turun dan toilet lantai 1 basement sudah mampet",
+          date: "—",
+          jenjang: "SD",
+          alamat:
+            "Jl. Pertengahan No.4, Kel, RT.5/RW.7, Cijantung, Kec. Ps. Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770",
+        },
+        {
+          id: 9,
+          nama: "TK Negeri Pasar Rebo 03",
+          npsn: "20112469",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "1. Kondisi rangka atap sudah rapuh, sehingga dikhawatirkan tidak mampu menopang konstruksi atap secara optimal dan berpotensi membahayakan keselamatan warga sekolah.\n2.  Kondisi genteng banyak yang bergeser dan terkikis oleh ranting pohon, sehingga menyebabkan fungsi penutup atap tidak maksimal dan air hujan mudah masuk ke dalam bangunan.\n3. Dinding/tembok pada ruang kelas, kantor, dan kamar mandi mengalami keretakan, bahkan terdapat retakan yang tembus hingga ke bagian belakang dinding.\n4.   Plafon yang sebelumnya telah dilakukan perbaikan masih mengalami kebocoran, yang disebabkan oleh kondisi rangka atap dan genteng yang bergeser serta tidak lagi berfungsi secara optimal.\n5.   Kondisi kusen pintu dan jendela sudah keropos dan lapuk, sehingga mengurangi keamanan, kekuatan, dan kelayakan bangunan.\n6.    Daya tampung gedung tidak memadai karena jumlah peminat peserta didik TK Negeri Pasar Rebo 03 sangat tinggi.\n7. Sudah direkomendasikan oleh Suku Dinas Cipta Karya, Tata Ruang dan Pertanahan untuk dilakukan rehab total karena kerusakan vital dan berat pada tahun 2023 dan tahun 2026\n8. Secara keseluruhan, kondisi gedung sekolah berpotensi membahayakan pelaksanaan Kegiatan Belajar Mengajar (KBM) serta keselamatan murid, guru, dan tenaga kependidikan.\n9. Sudah mengajukan untuk ketiga kalinya proposal rehab total pada tanggal 26 Agustus 2026",
+          date: "—",
+          jenjang: "TK",
+          alamat: "Jl. Lapan Rt.04 Rw.09 Pekayon Pasar Rebo Jakarta Timur",
+        },
+        {
+          id: 10,
+          nama: "SDN Cijantung 01",
+          npsn: "20108814",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah tua, terutama bagian plafon banyak kerusakan, dinding keropos, keramik lantai sudah butek, dan bagian tembok belakang sekolah membahayakan",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Pertengahan RT.006 RW.007, Cijantung, Pasar Rebo",
+        },
+        {
+          id: 11,
+          nama: "SDN Gedong 08 Pagi",
+          npsn: "20109024",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah tua, terutama dibagian plafon dan kusen sudah banyak kerusakan",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Trikora No.74 RT.003/009, Gedong, Pasar Rebo",
+        },
+        {
+          id: 12,
+          nama: "SDN Cijantung 03 Pagi",
+          npsn: "20108815",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah tua, sejak pembaruan terakhir tahun 2000an",
+          date: "—",
+          jenjang: "SD",
+          alamat:
+            "Jl. R.A. Fadillah No. 1 (atau Jl. R.A. Fadillah No. 11), Kelurahan Cijantung, Kecamatan Pasar Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770",
+        },
+        {
+          id: 13,
+          nama: "SDN PEKAYON 11 PAGI ",
+          npsn: "20108842",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah tua, terutama bagian plafon banyak kerusakan, dan bagian pagar sudah miring ke arah warga ",
+          date: "—",
+          jenjang: "SD ",
+          alamat:
+            "Jln Gandaria I Rt 008/003 Kel Pekayon Kec Pasar Rebo jakarta Timur ",
+        },
+        {
+          id: 14,
+          nama: "SDN Kalisari 03 Pagi",
+          npsn: "20108826",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah tua dibangun tahun 1976 rehab berat terakhir tahun 2012  dan ada bagian pagar sudah miring dan hampir roboh ke arah bangunan warga",
+          date: "—",
+          jenjang: "SD",
+          alamat:
+            "Jl. Asrama Yon Kav I, Cijantung IV, Kalisari, Kec. Pasar Rebo, Kota Jakarta Timur Prov. D.K.I. Jakarta",
+        },
+        {
+          id: 15,
+          nama: "SDN Gedong 01 ",
+          npsn: "20108821",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Kondisi bangunan sekolah sudah tua,  mulai keropos dan sudah didata oleh sudin citata dua kali tetapi belum ada tindak lanjut dan dikategorikan rusak sedang.",
+          date: "—",
+          jenjang: "SD",
+          alamat:
+            "Jl. Trikora No.67 Rt.002/009 Kel.Gedong Pasar Rebo Jakarta Timur",
+        },
+        {
+          id: 16,
+          nama: "SDN PEKAYON 15 PAGI",
+          npsn: "20108830",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Gedung sekolah sudah tua, terdapat 1 ruang kelas di lantai 2 yang lantai nya sudah goyang / tidak stabil dan kelas yang di bawah nya bagian atas retak (kondisi ruang kelas sudah tidak digunakan demi keamanan murid). Lalu untuk RKB (Ruang kelas baru) (beda gedung) terdapat ruang kelas yang dindingnya sudah retak, kontur tanah yang tidak stabil segingga menyebabkan dinding ruang kelas retak dan terdaapat kusen jendela kelas yang sudah keropos termakan rayap. (sekolah sudah di survei dari citata, dinas pendidikan dan sudin wilayah jakarta timur 2)",
+          date: "—",
+          jenjang: "SD",
+          alamat: "JL.TELAGA RT 013 RW 09 Kel.Pekayon Kec. Pasar Rebo",
+        },
+        {
+          id: 17,
+          nama: "SDN Gedong 05",
+          npsn: "20108822",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan: "Sekolah sudah cukup tua. banyak kerusakan atap dan tembok",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Surilang No.8 Rt.05/12 Kel. Gedong Kec. Pasar Rebo",
+        },
+        {
+          id: 18,
+          nama: "SDN GEDONG 03 ",
+          npsn: "20109110",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Sekolah berdiri tahun 1974, kerusakan² sekolah segera diperbaiki, hanya sebagian yang belum diperbaiki",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Raya Condet RT 012/003 Kel. Gedong",
+        },
+        {
+          id: 19,
+          nama: "SDN Cijantung 07 Pagi",
+          npsn: "20109262",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah sangat tua dan kerangka atap keropos, dan sudah didata berkali-kali untuk direnovasi total tapi belum ada tindak lanjut",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Gongseng Raya RT 010/01 Kel. Cijantung. Kec. Pasar Rebo",
+        },
+        {
+          id: 20,
+          nama: "SDN Baru 01 Pagi",
+          npsn: "20108989",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sudah cukup tua, membuat beberapa pintu kamar mandi keropos, lantai ubin tangga sudah pecah pecah, dan beberapa ubin di selasar pecah, Plafon yang ada di selasar dan sambungan bangunan yang mengalami kebocoran Plafon di area selasar kelas yang sudah rusak, copot dan menggelembung",
+          date: "—",
+          jenjang: "SD",
+          alamat:
+            "Jl. R.A. Fadillah RT.001/001 No.001, Kel Baru, Kec Pasar Rebo",
+        },
+        {
+          id: 21,
+          nama: "SDN Pekayon 18 Pagi",
+          npsn: "20108833",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Kondisi bangunan dan Pagar sekolah sudah tua,  dan roboh dan sudah didata oleh sudin citata tiga kali tetapi belum ada tindak lanjut dan dikategorikan rusak berat",
+          date: "—",
+          jenjang: "SD",
+          alamat: "JL. Tipar Rt 01/06 Kel. Pekayon Kec Pasar Rebo",
+        },
+        {
+          id: 22,
+          nama: "SMP NEGERI 203 JAKARTA",
+          npsn: "20103622",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Ringan",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "dak kamar mandi putra lantai 1 dan 4  air nya rembes kecil keluar gedung , tembok retak retak kecil",
+          date: "—",
+          jenjang: "SMP",
+          alamat:
+            "Jl. Raya Kalisari RT 006 RW 02 Kel. Kalisari Kec. Pasar Rebo Jakarta Timur",
+        },
+        {
+          id: 23,
+          nama: "SDN PEKAYON 16 PAGI",
+          npsn: "20108831",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan lama, khusus lantai 2 Plafon, kusen jendela,lantai rembes bocor kebawah, tidak ada kamar mandi lantai 2, pintu kelas  banyak rusak ,keramik koridor lantai bawah ",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Swadaya RT 008 RW 010 Kel. Pekayon",
+        },
+        {
+          id: 24,
+          nama: "SDN GEDONG 10 PGI",
+          npsn: "20108824",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan tua, instalasi Plumbing mengalami kebocoran dari lantai dua sampai lantai satu dan tidak ada shaf untuk perbaikan karena langsung menyatu dengan pondasi bangunan",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Taiman Barat II no.8 Rt.005/10 kel gedong",
+        },
+        {
+          id: 25,
+          nama: "SDN Pekayon 09",
+          npsn: "20108981",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Berat",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan dalam kondisi kurang layak dan memerlukan perbaikan. Terlihat adanya kerusakan pada beberapa bagian fisik bangunan, seperti : \n1.        Dinding tembok dan sambungan pada pondasi Gedung yang sudah rapuh dan lembab yang mengakibatkan tembok menjadi gembur gampang rontok dan terkikis\n2.        Plafon kelas ada bebera kelas yang sangat membahayakan dikarenakan kerangka plafon yang sudah turun dikerenakan dimakan usia sudah lama\n3.        Lantai sering terlepas atau terangkat yang mengakibatkan kalo terinjak akan pecah dan bisa melukai siswa\n4.        Saluran Sanitasi yang bagian dinding saluran sudah rubuh yang mengakibatkan saluran air dapat tersumbat.\n5.        Atap Gedung yang sudah banyak korosi dikarena type genteng yang lembaran dan posisi genteng yang sudah tidak pada tempatnya\nKondisi tersebut berpotensi mengganggu kenyamanan, keamanan, dan kelancaran aktivitas pengguna bangunan. Oleh karena itu, diperlukan pemeriksaan lebih lanjut serta tindak lanjut perbaikan atau rehabilitasi sesuai tingkat kerusakan.\npemeliharaan dinding selalu dilakukan tapi kondisi material yang tidak kokoh mudah dirusak oleh anak2\n",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jalan Pendidikan RT 004 RW 09 Kecamatan Pasar Rebo",
+        },
+        {
+          id: 26,
+          nama: "SDN BARU 08 PAGI",
+          npsn: "20109093",
+          wilayah: "Jakarta Timur · Pasar Rebo",
+          objek: "Gedung sekolah",
+          kondisi: "Sedang",
+          status: "Belum Ditindaklanjuti",
+          temuan:
+            "Bangunan sekolah sudah sangat tua dan kerangka atap keropos, lapangan sudah seharusnya diperbaiki total dan sudah didata berkali-kali untuk direnovasi total tapi belum ada tindak lanjut",
+          date: "—",
+          jenjang: "SD",
+          alamat: "Jl. Sawo No.21 RT.07/02 Kel. Baru Ps.Rebo",
+        },
+      ];
+      // ---------------------------------------------------------------------
+      // Application state and shared helpers
+      // ---------------------------------------------------------------------
+      let data = original.map((x) => ({ ...x }));
+      let current = "dashboard";
+      const $ = (q) => document.querySelector(q);
+      const escapeHTML = (s) =>
+        String(s ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      function badge(s) {
+        const map = {
+          Ringan: "green",
+          Sedang: "yellow",
+          Berat: "red",
+          "Belum Dinilai": "blue",
+          Selesai: "green",
+          "Dalam Penanganan": "yellow",
+          Diusulkan: "blue",
+          "Dalam Verifikasi": "yellow",
+          "Belum Ditindaklanjuti": "red",
+        };
+        return `<span class="chip ${map[s] || "blue"}">${escapeHTML(s)}</span>`;
+      }
+      function msg(s) {
+        const t = $("#toast");
+        t.textContent = s;
+        t.style.display = "block";
+        setTimeout(() => (t.style.display = "none"), 3100);
+      }
+      // ---------------------------------------------------------------------
+      // Navigation
+      // ---------------------------------------------------------------------
+      const sidebar = $("#mobileSidebar");
+      const menuToggle = $("#menuToggle");
+      const menuClose = $("#menuClose");
+      const menuOverlay = $("#menuOverlay");
+
+      function setMobileMenu(open) {
+        sidebar.classList.toggle("mobile-open", open);
+        menuOverlay.classList.toggle("visible", open);
+        document.body.classList.toggle("menu-open", open);
+        menuToggle.setAttribute("aria-expanded", String(open));
+        menuToggle.setAttribute(
+          "aria-label",
+          open ? "Tutup menu navigasi" : "Buka menu navigasi",
+        );
+      }
+
+      menuToggle.addEventListener("click", () => {
+        setMobileMenu(!sidebar.classList.contains("mobile-open"));
+      });
+      menuClose.addEventListener("click", () => setMobileMenu(false));
+      menuOverlay.addEventListener("click", () => setMobileMenu(false));
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setMobileMenu(false);
+      });
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 730) setMobileMenu(false);
+      });
+
+      function go(p) {
+        current = p;
+        document
+          .querySelectorAll(".content>section")
+          .forEach((x) => x.classList.toggle("hidden", x.id !== p));
+        document
+          .querySelectorAll(".nav")
+          .forEach((x) => x.classList.toggle("active", x.dataset.page === p));
+        $("#breadcrumb").textContent = {
+          dashboard: "Dashboard Rehabilitasi",
+          sekolah: "Data Sekolah",
+          detail: "Detail dan Verifikasi Sekolah",
+          form: "Inventarisasi Kondisi",
+          prioritas: "Prioritas Penanganan",
+          monitor: "Monitoring Rehabilitasi",
+        }[p];
+        setMobileMenu(false);
+        render();
+        if (p === "detail") renderDetail();
+        scrollTo({ top: 0, behavior: "smooth" });
+      }
+      document
+        .querySelectorAll("[data-page]")
+        .forEach((b) => (b.onclick = () => go(b.dataset.page)));
+      document
+        .querySelectorAll("[data-go]")
+        .forEach((b) => (b.onclick = () => go(b.dataset.go)));
+      // ---------------------------------------------------------------------
+      // List, dashboard, priority, and monitoring views
+      // ---------------------------------------------------------------------
+      function row(x, short = false) {
+        return `<tr><td><button class="clickable-name" data-detail="${x.id}">${escapeHTML(x.nama)}</button>${short ? "" : `<br><span class="mini">NPSN: ${escapeHTML(x.npsn || "—")}</span>`}</td><td>${escapeHTML(x.wilayah)}</td><td>${badge(x.kondisi)}</td>${short ? "" : `<td>${escapeHTML(x.objek)}</td>`}<td>${badge(x.status)}</td><td>${escapeHTML(x.date)}</td>${short ? "" : `<td><button class="linkbutton" data-detail="${x.id}">Detail</button> <button class="linkbutton" data-change="${x.id}">Status</button></td>`}</tr>`;
+      }
+      function progress(el, items) {
+        const total = data.length || 1;
+        el.innerHTML = items
+          .map(([s, color]) => {
+            const n = data.filter(
+              (x) => x.kondisi === s || x.status === s,
+            ).length;
+            return `<div class="progressrow"><div class="prtop"><span>${s}</span><strong>${n} catatan</strong></div><div class="bar"><span style="width:${(n / total) * 100}%;background:${color}"></span></div></div>`;
+          })
+          .join("");
+      }
+
+      function getPriority(record) {
+        const severityScore = {
+          Berat: 76,
+          Sedang: 52,
+          Ringan: 28,
+          "Belum Dinilai": 10,
+        }[record.kondisi];
+        const finding = (record.temuan || "").toLowerCase();
+        const safetySignals = [
+          "membahayakan",
+          "roboh",
+          "goyang",
+          "rapuh",
+          "keropos",
+          "retak",
+          "banjir",
+          "bocor",
+        ].filter((keyword) => finding.includes(keyword)).length;
+        const followUpDelay =
+          /belum ada tindak lanjut|berkali-kali|ketiga kalinya/.test(finding)
+            ? 6
+            : 0;
+        const score = Math.min(
+          99,
+          severityScore + safetySignals * 4 + followUpDelay,
+        );
+        const level = score >= 76 ? "P1" : score >= 50 ? "P2" : "P3";
+        const recommendation =
+          level === "P1"
+            ? "Asesmen teknis segera, amankan area berisiko, dan siapkan usulan rehab."
+            : level === "P2"
+              ? "Verifikasi komponen terdampak dan susun kebutuhan rehab terjadwal."
+              : "Masukkan ke pemeliharaan berkala dan pantau perkembangan kerusakan.";
+
+        return { level, score, recommendation };
+      }
+
+      function render() {
+        const prioritizedRecords = data
+          .map((record) => ({ record, ...getPriority(record) }))
+          .sort((a, b) => b.score - a.score || a.record.id - b.record.id);
+
+        $("#recommendationRows").innerHTML = prioritizedRecords
+          .slice(0, 5)
+          .map(
+            ({ record, level, score, recommendation }) =>
+              `<tr><td><span class="priority-code ${level.toLowerCase()}">${level}</span></td><td><button class="clickable-name" data-detail="${record.id}">${escapeHTML(record.nama)}</button><br><span class="mini">NPSN: ${escapeHTML(record.npsn || "—")}</span></td><td>${escapeHTML(record.jenjang || "—")}</td><td>${badge(record.kondisi)}</td><td><strong>${score}</strong>/100</td><td>${escapeHTML(recommendation)}</td></tr>`,
+          )
+          .join("");
+        progress($("#categoryBars"), [
+          ["Ringan", "#0ea785"],
+          ["Sedang", "#f3c623"],
+          ["Berat", "#e36646"],
+          ["Belum Dinilai", "#7490b4"],
+        ]);
+        let q = ($("#search").value || "").toLowerCase(),
+          k = $("#filterKondisi").value,
+          s = $("#filterStatus").value;
+        const filtered = data.filter(
+          (x) =>
+            (x.nama + " " + x.npsn + " " + x.wilayah)
+              .toLowerCase()
+              .includes(q) &&
+            (!k || x.kondisi === k) &&
+            (!s || x.status === s),
+        );
+        $("#schoolRows").innerHTML = filtered.length
+          ? filtered.map((x) => row(x, false)).join("")
+          : `<tr><td colspan="7" class="empty">Tidak ada data yang sesuai filter.</td></tr>`;
+        $("#priorityRows").innerHTML = prioritizedRecords
+          .map(
+            ({ record, level, score, recommendation }) =>
+              `<tr><td><span class="priority-code ${level.toLowerCase()}">${level}</span></td><td><button class="clickable-name" data-detail="${record.id}">${escapeHTML(record.nama)}</button><br><span class="mini">${escapeHTML(record.wilayah)}</span></td><td>${escapeHTML(record.objek)}</td><td>${badge(record.kondisi)}</td><td>${badge(record.status)}</td><td><strong>${score}/100</strong><br>${escapeHTML(recommendation)} <button class="linkbutton" data-detail="${record.id}">Detail</button></td></tr>`,
+          )
+          .join("");
+        progress($("#statusBars"), [
+          ["Belum Ditindaklanjuti", "#e36646"],
+          ["Dalam Verifikasi", "#e6b51a"],
+          ["Diusulkan", "#2863cf"],
+          ["Dalam Penanganan", "#088395"],
+          ["Selesai", "#17a779"],
+        ]);
+        $("#monitorRows").innerHTML = data
+          .map(
+            (x) =>
+              `<tr><td><strong>${escapeHTML(x.nama)}</strong></td><td>${escapeHTML(x.objek)}</td><td>${badge(x.kondisi)}</td><td>${badge(x.status)}</td><td>${escapeHTML(x.date)}</td><td><button class="linkbutton" data-detail="${x.id}">Detail</button> <button class="linkbutton" data-change="${x.id}">Status</button></td></tr>`,
+          )
+          .join("");
+        document
+          .querySelectorAll("[data-change]")
+          .forEach(
+            (b) => (b.onclick = () => changeStatus(Number(b.dataset.change))),
+          );
+        document
+          .querySelectorAll("[data-detail]")
+          .forEach(
+            (b) => (b.onclick = () => openDetail(Number(b.dataset.detail))),
+          );
+      }
+      // ---------------------------------------------------------------------
+      // User actions: status updates, filtering, form input, and CSV export
+      // ---------------------------------------------------------------------
+      function changeStatus(id) {
+        const rec = data.find((x) => x.id === id);
+        if (!rec) return;
+        const options = [
+          "Belum Ditindaklanjuti",
+          "Dalam Verifikasi",
+          "Diusulkan",
+          "Dalam Penanganan",
+          "Selesai",
+        ];
+        const v = prompt(
+          "Ubah status (pilih salah satu):\n" +
+            options.map((x, i) => `${i + 1}. ${x}`).join("\n"),
+          String(options.indexOf(rec.status) + 1),
+        );
+        if (v === null) return;
+        const idx = Number(v) - 1;
+        if (!Number.isInteger(idx) || !options[idx])
+          return msg("Nomor status tidak valid.");
+        rec.status = options[idx];
+        rec.date = new Date().toISOString().slice(0, 10);
+        render();
+        msg("Status data contoh diperbarui.");
+      }
+      $("#search").oninput = render;
+      $("#filterKondisi").onchange = render;
+      $("#filterStatus").onchange = render;
+      $("#bukti").onchange = (e) =>
+        ($("#fileNames").textContent =
+          Array.from(e.target.files)
+            .map((x) => x.name)
+            .join(", ") || "Belum ada berkas dipilih");
+      $("#inventoryForm").onsubmit = (e) => {
+        e.preventDefault();
+        const f = new FormData(e.target),
+          d = Object.fromEntries(f.entries());
+        if (d.npsn && !/^\d{8}$/.test(d.npsn))
+          return msg("NPSN harus terdiri dari 8 angka atau dikosongkan.");
+        data.unshift({
+          ...d,
+          id: Math.max(0, ...data.map((x) => x.id)) + 1,
+          date: new Date().toISOString().slice(0, 10),
+        });
+        e.target.reset();
+        $("#fileNames").textContent = "Tidak ada berkas dipilih.";
+        go("sekolah");
+        msg(
+          "Catatan simulasi berhasil ditambahkan (belum tersimpan ke server).",
+        );
+      };
+      $("#export").onclick = () => {
+        const headers = [
+          "Nama Sekolah",
+          "NPSN",
+          "Wilayah",
+          "Objek",
+          "Kondisi",
+          "Status",
+          "Temuan",
+          "Tanggal",
+        ];
+        const vals = data.map((x) => [
+          x.nama,
+          x.npsn,
+          x.wilayah,
+          x.objek,
+          x.kondisi,
+          x.status,
+          x.temuan,
+          x.date,
+        ]);
+        const csv = [headers, ...vals]
+          .map((r) =>
+            r
+              .map((v) => '"' + String(v ?? "").replace(/"/g, '""') + '"')
+              .join(","),
+          )
+          .join("\r\n");
+        const url = URL.createObjectURL(
+          new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }),
+        );
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "inventarisasi_sape_demo.csv";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      };
+      // ---------------------------------------------------------------------
+      // School detail view, notes, and photo attachments
+      // ---------------------------------------------------------------------
+      let activeDetailId = data[0]?.id || null;
+      const notesById = {};
+      const photosById = {};
+      function openDetail(id) {
+        activeDetailId = id;
+        go("detail");
+        renderDetail();
+      }
+      function renderDetail() {
+        const x = data.find((v) => v.id === activeDetailId);
+        if (!x) return;
+        $("#detNama").textContent = x.nama;
+        $("#detNama2").textContent = x.nama;
+        $("#detSubtitle").textContent =
+          "Profil inventarisasi dan catatan tindak lanjut · " + x.wilayah;
+        $("#detNpsn").textContent = x.npsn || "Tidak tersedia";
+        $("#detWilayah").textContent = x.wilayah;
+        $("#detKondisi").innerHTML = badge(x.kondisi);
+        $("#detStatus").innerHTML = badge(x.status);
+        $("#detJenjang").textContent = x.jenjang || "—";
+        $("#detAlamat").textContent = x.alamat || "—";
+        $("#detObjek").textContent = x.objek || "—";
+        $("#detTemuan").textContent =
+          x.temuan || "Tidak ada uraian temuan dari sumber";
+        $("#detInputStatus").value = x.status;
+        $("#detPetugas").value = x.pic || "";
+        $("#detCatatan").value = "";
+        let logs = notesById[x.id] || [];
+        $("#detHistory").innerHTML = logs.length
+          ? logs
+              .slice()
+              .reverse()
+              .map(
+                (l) =>
+                  `<div class="timeitem"><b>${escapeHTML(l.status)}</b><small>${escapeHTML(l.date)} · ${escapeHTML(l.pic || "Pengguna prototipe")}</small><p>${escapeHTML(l.note || "Status diperbarui")}</p></div>`,
+              )
+              .join("")
+          : '<p class="mini">Belum ada catatan verifikasi tambahan. Status awal merupakan simulasi; temuan kondisi bangunan berasal dari Excel.</p>';
+        const images = photosById[x.id] || [];
+        $("#photoGallery").innerHTML = images
+          .map(
+            (im, i) =>
+              `<div class="photobox"><img src="${im.url}" alt="Bukti simulasi ${i + 1}"><button data-removephoto="${i}" type="button" title="Hapus foto">×</button></div>`,
+          )
+          .join("");
+        document.querySelectorAll("[data-removephoto]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              const idx = Number(b.dataset.removephoto);
+              URL.revokeObjectURL(images[idx].url);
+              images.splice(idx, 1);
+              renderDetail();
+            }),
+        );
+      }
+      $("#backToList").onclick = () => go("sekolah");
+      $("#detailForm").onsubmit = (e) => {
+        e.preventDefault();
+        const x = data.find((v) => v.id === activeDetailId);
+        if (!x) return;
+        x.status = $("#detInputStatus").value;
+        x.pic = $("#detPetugas").value.trim();
+        x.date = new Date().toLocaleDateString("id-ID");
+        (notesById[x.id] ??= []).push({
+          status: x.status,
+          pic: x.pic,
+          note: $("#detCatatan").value.trim(),
+          date: x.date,
+        });
+        render();
+        renderDetail();
+        msg("Catatan verifikasi disimpan untuk sesi browser ini.");
+      };
+      $("#detailPhotos").onchange = (e) => {
+        const x = data.find((v) => v.id === activeDetailId);
+        if (!x) return;
+        const files = Array.from(e.target.files || []);
+        const images = (photosById[x.id] ??= []);
+        for (const f of files) {
+          if (!f.type.startsWith("image/") || f.size > 5e6) {
+            msg("Hanya gambar maksimal 5 MB per foto.");
+            continue;
+          }
+          images.push({ name: f.name, url: URL.createObjectURL(f) });
+        }
+        e.target.value = "";
+        renderDetail();
+      };
+      // Bootstrap the interface. All changes stay local to the current tab;
+      // the source workbook is never modified.
+      render();
+    </script>
+  </body>
+</html>
